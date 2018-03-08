@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+ name: deployment #bebas untuk penamaan
+spec:
+ replicas: 1 #ganti sesuai mau dikasih berapa replika
+ template:
+  metadata:
+   labels:
+    app: app1 #bebas untuk penamaan
+  spec:
+   volumes:
+     - name: storage #bebas untuk penamaan
+       persistentVolumeClaim:
+        claimName: storage-claim-pv #harus disamakan dengan nama PersistentVolumeClaim yang ada di volume.yml
+   containers:
+     - name: container-app #bebas untuk penamaan
+       image: amanu/php56-apache #sesuaikan dengan image yang akan di pakai
+       ports:
+         - containerPort: 80 #default port
+           name: "http-server" #bebas untuk penamaan
+       volumeMounts:
+         - mountPath: "/var/www/html"
+           name: storage-pv
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service #bebas untuk penamaan
+spec:
+  type: NodePort
+  ports:
+    - port: 80 #sesuaikan sama default yang di deployment
+      nodePort: 30999 #bebas untuk port yang akan di akses lewat browser
+  selector:
+    app: app1 #samakan dengan nama app pada deployment untuk menghubungkan ke deployment

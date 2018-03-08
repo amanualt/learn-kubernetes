@@ -1,0 +1,26 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: volume #bebas untuk penamaan
+  labels:
+    type: local
+spec:
+  storageClassName: manual #bebas untuk penamaan
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce #ini bebas hakaksesnya mau apa
+  hostPath:
+    path: "/media/src" #ini adalah folder aplikasi yang akan di akses, jadi taroh aplikasi pada folder ini, tempat folder bebas dimana saja
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: storage-claim-pv #bebas untuk penamaan, pada claimName di deployment harus disamakan dengan nama ini
+spec:
+  storageClassName: manual #harus disamakan dengan storageClassName pada PersistentVolume di atas
+  accessModes:
+    - ReadWriteOnce #ini bebas hakaksesnya mau apa
+  resources:
+    requests:
+      storage: 3Gi

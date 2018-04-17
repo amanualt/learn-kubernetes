@@ -21,7 +21,7 @@ spec:
            name: "http-server" #bebas untuk penamaan
        volumeMounts:
          - mountPath: "/var/www/html"
-           name: storage-pv
+           name: storage
 ---
 apiVersion: v1
 kind: Service
